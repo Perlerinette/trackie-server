@@ -12,13 +12,16 @@ let jobapp = require('./controllers/jobappcontroller');
 app.use(express.json());
 
 app.use('/school', school);
-// app.use('/jobseeker', jobseeker);
-// app.use('/jobapplication', jobapp);
-// app.use('/cohort', cohort);
+app.use('/jobseeker', jobseeker);
+
+// Protected routes
+app.use('/jobapplication', jobapp);
+app.use('/cohort', cohort);
+
 
 db.authenticate()
-.then(() => db.sync({force: true}))
-// .then(() => db.sync())
+// .then(() => db.sync({force: true}))
+.then(() => db.sync())
 .then(() =>  app.listen(3000, () => {
     console.log(`[server]: App is listening on localhost:3000`);
   })

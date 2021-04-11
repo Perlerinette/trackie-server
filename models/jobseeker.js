@@ -2,12 +2,12 @@ const { DataTypes } = require("sequelize");
 const db = require("../db");
 
 const Jobseeker = db.define('jobseeker', {
-    firstName:{
-        type: DataTypes.STRING(50),
+    firstname:{
+        type: DataTypes.STRING(100),
         allowNull: false,
     },
-    lastName:{
-        type: DataTypes.STRING(50),
+    lastname:{
+        type: DataTypes.STRING(100),
         allowNull:false
     },
     email: {
@@ -19,11 +19,11 @@ const Jobseeker = db.define('jobseeker', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    shareData: {
+    sharedata: {
         type: DataTypes.BOOLEAN,
         allowNull: false
     },
-    invitCode: {
+    invitcode: {
         type: DataTypes.STRING,
         allowNull: true
     }

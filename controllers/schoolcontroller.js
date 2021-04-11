@@ -1,6 +1,9 @@
 const router = require("express").Router();
-const { School } = require("../models");
+const { School, Cohort } = require("../models");
 const jwt = require("jsonwebtoken");
+const bcrypt = require('bcryptjs');
+
+let validateSchoolSession = (require('../middleware/validateSchoolSession'));
 
 router.post("/test", function (req, res) {
   res.send("School endpoint works");
@@ -10,8 +13,10 @@ router.post("/test", function (req, res) {
 /*
 ENDPOINTS:
 
-http://localhost:3000/school/create   -  POST
-http://localhost:3000/school/login   -  POST
+http://localhost:3000/school/create         -  POST > Sign up a new school
+http://localhost:3000/school/login          -  POST > Log in a school
+http://localhost:3000/school/all            -  GET  > nb of school accounts
+
 
 */
 
@@ -20,20 +25,22 @@ http://localhost:3000/school/login   -  POST
  ******************/
 router.post("/create", function(req, res){
     School.create({
-        schoolName: req.body.school.schoolName,
-        cohort: req.body.school.cohort,
+        schoolname: req.body.school.schoolname,
         email: req.body.school.email,
-        password: req.body.school.password
+        password: bcrypt.hashSync(req.body.school.password, 13)
     })
     .then((school) => {
-        let invitCode = generateCode();
+        //token
+        let schoolToken = jwt.sign({id: school.id}, process.env.JWT_SCHOOL_SECRET, {expiresIn: 60*60*24});
+
         res.status(200).json({
             school: school,
-            message: "New school created.",
-            invitCode: invitCode
+            message: "School account created.",
+            sessionSchoolToken: schoolToken
         })
+        
     })
-    .catch((err) => res.status(500).json({ error: err }));
+    .catch((err) => res.status(500).json({ error: err }));    
 })
 
 
@@ -46,10 +53,19 @@ router.post("/create", function(req, res){
     })
     .then((school) => {
         if(school) {
-            res.status(200).json({
-                school: school,
-                message: "School successfully logged in."
-            })
+            bcrypt.compare(req.body.school.password, school.password, function(err, matches) {
+                if(matches){
+                    let schoolToken = jwt.sign({id: school.id}, process.env.JWT_SCHOOL_SECRET, {expiresIn: 60*60*24});
+
+                    res.status(200).json({
+                        school: school,
+                        message: "School successfully logged in.",
+                        sessionSchoolToken: schoolToken
+                    })
+                } else {
+                    res.status(502).send({error: "Login failed"});
+                }
+        });
         } else {
             res.status(500).json({ error: "School does not exist" })
         }
@@ -58,17 +74,16 @@ router.post("/create", function(req, res){
 })
 
 
-// Generate invitation code when school registers
-// this will be used by jobseekers and cohort tables
-function generateCode(){
-    var crypto = require("crypto");
-    var code = crypto.randomBytes(3).toString("hex").toUpperCase();
 
-    console.log("invit code: ", code);
 
-    return code;
-}
-
+/*****************
+ * SCHOOL - All  *
+ ****************/
+ router.get('/countAll', (req,res) => {
+    School.count()
+    .then(nbSchool => res.status(200).json(nbSchool))
+    .catch(err => res.status(500).json({error: err}))
+})
 
 
 
