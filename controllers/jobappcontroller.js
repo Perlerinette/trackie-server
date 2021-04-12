@@ -11,9 +11,13 @@ router.post("/test",validateJobseekerSession, function (req, res) {
 /*
 ENDPOINTS:
 
-http://localhost:3000/jobapplication/create     -  POST > create new job application
-http://localhost:3000/jobapplication/getAll     -  GET > get all applications of a jobseeker
-http://localhost:3000/jobapplication/countAll   -  GET > count all applications of a jobseeker
+http://localhost:3000/jobapplication/create           -  POST > create new job application
+http://localhost:3000/jobapplication/getAll           -  GET  > get all applications of a jobseeker
+http://localhost:3000/jobapplication/getOne/:id       -  GET  > get one specific application of a jobseeker
+http://localhost:3000/jobapplication/countAll         -  GET  > count all applications of a jobseeker
+http://localhost:3000/jobapplication/getData/:group   -  GET  > Get a set of similar data from all the job applications of a jobseeker (e.g: only dates of applications)
+http://localhost:3000/jobapplication/edit/:id         -  PUT  > edit/update a specific application of a jobseeker
+http://localhost:3000/jobapplication/delete/:id       -  DELETE  > delete a specific application of a jobseeker
 
 */
 
@@ -47,6 +51,18 @@ http://localhost:3000/jobapplication/countAll   -  GET > count all applications 
   Jobapp.findAll({
       where: { jobseekerid: req.jobseeker.id }
   })
+  .then(jobapps => res.status(200).json(jobapps))
+  .catch(err => res.status(500).json({error: err}))
+})
+
+
+/****************************
+ * JOBAPPLICATION - getOne  *
+ ***************************/
+ router.get('/getOne/:id', validateJobseekerSession, (req,res) => {
+  Jobapp.findOne({
+      where: { id: req.params.id, jobseekerid: req.jobseeker.id }
+  })
   .then(jobapp => res.status(200).json(jobapp))
   .catch(err => res.status(500).json({error: err}))
 })
@@ -63,10 +79,12 @@ http://localhost:3000/jobapplication/countAll   -  GET > count all applications 
   .catch(err => res.status(500).json({error: err}))
 })
 
-/*****************************
- * JOBAPPLICATION - getDate  *
- ****************************/
- router.get('/getDate', validateJobseekerSession, (req,res) => {
+
+
+/****************************
+ * JOBAPPLICATION - getData  *
+ ***************************/
+ router.get('/getData/:group', validateJobseekerSession, (req,res) => {
   Jobapp.findOne({
     where: { jobseekerid: req.jobseeker.id }
   })
@@ -74,7 +92,7 @@ http://localhost:3000/jobapplication/countAll   -  GET > count all applications 
     console.log(jobapps.applicationdate);
     sequelize
         .query(
-          `SELECT jobapps.applicationdate 
+          `SELECT jobapps.${req.params.group} 
           FROM jobapps 
           WHERE jobapps.jobseekerid = '${req.jobseeker.id}'`
         )
@@ -90,8 +108,6 @@ http://localhost:3000/jobapplication/countAll   -  GET > count all applications 
     })
   .catch(err => res.status(500).json({error: err}))
 })
-
-
 
 
 /******************************
@@ -111,7 +127,7 @@ const query = { where: { id: req.params.id, jobseekerid: req.jobseeker.id} };
 
 Jobapp.update(updateJobApp, query)
 .then((application) => res.status(200).json({
-    message: application > 0? "Updated" : "No update"})
+    message: application > 0? "Job application updated" : "Couldn't update this job application"})
 )
 .catch((err) => res.status(500).json({error: err}));
 })

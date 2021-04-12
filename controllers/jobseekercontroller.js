@@ -12,9 +12,14 @@ router.post("/test", function (req, res) {
 /*
 ENDPOINTS:
 
-http://localhost:3000/jobseeker/create      -  POST
-http://localhost:3000/jobseeker/login       -  POST
-http://localhost:3000/jobseeker/countAll            -  GET  > nb of jobseekers account
+http://localhost:3000/jobseeker/create          -  POST  > creates new account
+http://localhost:3000/jobseeker/login           -  POST  > log into account
+http://localhost:3000/jobseeker/getProfile      -  GET   > view profile
+http://localhost:3000/jobseeker/addCode         -  PATCH > add an invitation code after sign-up or modify it.
+http://localhost:3000/jobseeker/changeSharing   -  PATCH > option to share or not job app information
+http://localhost:3000/jobseeker/changeEmail     -  PATCH > update email
+http://localhost:3000/jobseeker/changePwd       -  PATCH > update password
+http://localhost:3000/jobseeker/countAll        -  GET   > nb of jobseekers accounts
 
 */
 
@@ -85,6 +90,23 @@ http://localhost:3000/jobseeker/countAll            -  GET  > nb of jobseekers a
     .catch(err => res.status(500).json({error: err}))
 })
 
+
+/*************************
+ * JOBSEEKER - add code  *
+ ************************/
+ router.patch('/addCode', validateJobseekerSession, (req,res) => {
+    const addCode = {
+        invitcode: req.body.jobseeker.invitcode
+  };
+  
+  const query = { where: { id: req.jobseeker.id} };
+  
+  Jobseeker.update(addCode, query)
+  .then((profile) => res.status(200).json({
+      message: profile > 0? "New code entered!" : "Code could not be saved."})
+  )
+  .catch((err) => res.status(500).json({error: err}));
+  })
 
 
 /*******************************

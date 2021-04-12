@@ -14,8 +14,8 @@ router.post("/test", function (req, res) {
 ENDPOINTS:
 
 http://localhost:3000/school/create         -  POST > Sign up a new school
-http://localhost:3000/school/login          -  POST > Log in a school
-http://localhost:3000/school/all            -  GET  > nb of school accounts
+http://localhost:3000/school/login          -  POST > Log into an existing school account
+http://localhost:3000/school/countAll       -  GET   > nb of jobseekers accounts
 
 
 */

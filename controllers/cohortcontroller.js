@@ -13,8 +13,8 @@ ENDPOINTS:
 
 http://localhost:3000/cohort/create             -  POST > creates new cohort and generates associated unique code
 http://localhost:3000/cohort/delete             -  DELETE > deletes a cohort for a logged school
-http://localhost:3000/cohort/getCohort          -  GET > get all cohorts for a logged school
 http://localhost:3000/cohort/getCode/:cohort    -  GET > code for a specific cohort for a logged school
+http://localhost:3000/cohort/getCohort          -  GET > get all cohorts for a logged school
 http://localhost:3000/cohort/getData            -  GET > Get job applications data by cohort from jobseekers agreed to share with their school
 
 */
