@@ -4,8 +4,8 @@ const db = require("../db");
 const Cohort = db.define('cohort', {
     cohort:{
         type: DataTypes.STRING(200),
-        unique: true,
         allowNull: false,
+        unique: true
     },
     invitcode:{
         type: DataTypes.STRING(200),
