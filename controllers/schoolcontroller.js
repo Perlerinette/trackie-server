@@ -13,9 +13,10 @@ router.post("/test", function (req, res) {
 /*
 ENDPOINTS:
 
-http://localhost:3000/school/create         -  POST > Sign up a new school
-http://localhost:3000/school/login          -  POST > Log into an existing school account
-http://localhost:3000/school/countAll       -  GET   > nb of jobseekers accounts
+http://localhost:3000/school/create         -  POST     > Sign up a new school
+http://localhost:3000/school/login          -  POST     > Log into an existing school account
+http://localhost:3000/school/countAll       -  GET      > nb of school accounts
+http://localhost:3000/school/delete         -  DELETE   > delete school
 
 
 */
@@ -84,6 +85,18 @@ router.post("/create", function(req, res){
     .then(nbSchool => res.status(200).json(nbSchool))
     .catch(err => res.status(500).json({error: err}))
 })
+
+
+/********************
+ * SCHOOL - Delete  *
+ *******************/
+ router.delete('/delete', validateSchoolSession, (req,res) => {
+    const query = { where: { id: req.school.id } };
+  
+    School.destroy(query)
+    .then((response) => res.status(200).json({ message: response > 0 ?  " School account deleted": "Deletion school failed."}))
+    .catch((err) => res.status(500).json({error: err}));
+  });
 
 
 

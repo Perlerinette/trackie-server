@@ -8,6 +8,8 @@
 ![](testing_images/school-login.png)
 #### localhost:3000/school/countAll       -  GET 
 ![](testing_images/school-countAll.png)
+#### localhost:3000/school/delete       -  DELETE 
+![](testing_images/school-delete.png)
 
 ---------------------------------
 ### COHORT CONTROLLER
@@ -39,7 +41,9 @@
 #### localhost:3000/jobseeker/changePwd       -  PATCH
 ![](testing_images/jobseeker-changePwd.png)
 #### localhost:3000/jobseeker/countAll        -  GET
-![](testing_images/jobseeker-countAlle.png)
+![](testing_images/jobseeker-countAll.png)
+#### localhost:3000/jobseeker/delete        -  DELETE
+![](testing_images/jobseeker-delete.png)
 
 ---------------------------------
 ### JOBAPPLICATION CONTROLLER

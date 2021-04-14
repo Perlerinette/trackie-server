@@ -20,6 +20,7 @@ http://localhost:3000/jobseeker/changeSharing   -  PATCH > option to share or no
 http://localhost:3000/jobseeker/changeEmail     -  PATCH > update email
 http://localhost:3000/jobseeker/changePwd       -  PATCH > update password
 http://localhost:3000/jobseeker/countAll        -  GET   > nb of jobseekers accounts
+http://localhost:3000/jobseeker/delete          -  DELETE   > delete job seeker account
 
 */
 
@@ -169,6 +170,18 @@ http://localhost:3000/jobseeker/countAll        -  GET   > nb of jobseekers acco
     .then(nbSeeker => res.status(200).json(nbSeeker))
     .catch(err => res.status(500).json({error: err}))
 })
+
+
+/***********************
+ * JOBSEEKER - Delete  *
+ **********************/
+ router.delete('/delete', validateJobseekerSession, (req,res) => {
+    const query = { where: { id: req.jobseeker.id } };
+  
+    Jobseeker.destroy(query)
+    .then((response) => res.status(200).json({ message: response > 0 ?  " Account deleted": "Deletion account failed."}))
+    .catch((err) => res.status(500).json({error: err}));
+  });
 
 
 
