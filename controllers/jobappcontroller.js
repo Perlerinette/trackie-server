@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const { Jobapp } = require("../models");
 
+
 var sequelize = require("../db");
 let validateJobseekerSession = (require('../middleware/validateJobseekerSession'));
 
@@ -85,14 +86,16 @@ http://localhost:3000/jobapplication/delete/:id       -  DELETE  > delete a spec
  * JOBAPPLICATION - getData  *
  ***************************/
  router.get('/getData/:group', validateJobseekerSession, (req,res) => {
+   let group = req.params.group;
+
   Jobapp.findOne({
     where: { jobseekerid: req.jobseeker.id }
   })
   .then(jobapps => {
-    console.log(jobapps.applicationdate);
+    console.log(jobapps.group);
     sequelize
         .query(
-          `SELECT jobapps.${req.params.group} 
+          `SELECT jobapps.${group} 
           FROM jobapps 
           WHERE jobapps.jobseekerid = '${req.jobseeker.id}'`
         )
@@ -145,6 +148,53 @@ Jobapp.update(updateJobApp, query)
   .catch((err) => res.status(500).json({error: err}));
 });
 
+
+/****************************
+ * JOBAPPLICATION - export  *
+ ***************************/
+// const fastcsv = require("fast-csv");
+// const fs = require("fs");
+
+
+//  router.get('/export, validateJobseekerSession, (req,res) => {
+
+//   const fileName = req.params.filename;
+//   console.log(fileName);
+//   const ws = fs.createWriteStream(fileName);
+
+//   Jobapp.findAll({
+//       where: { jobseekerid: req.jobseeker.id }
+//   })
+//   .then(jobapps => {
+//     // console.log(jobapps);
+//     sequelize.connectionManager.getConnection()
+//     .then((connection) => {
+//         connection.query(
+//           `SELECT jobapps.id, jobapps.jobtitle, jobapps.company, jobapps.applicationdate, jobapps.jobdescription, jobapps.location, jobapps.status
+//             FROM jobapps 
+//             WHERE jobapps.jobseekerid = '${req.jobseeker.id}'`
+//         )
+//         .then(
+//           ([results, metadata]) => {
+//             console.log("My job apps ", results);
+//             fastcsv
+//                 .write(results, { headers: true })
+//                 .on("finish", function() {
+//                   console.log(`Write to ${fileName} successfully!`);
+//                 })
+//                 .pipe(ws);
+//             res.status(200).json(results);
+//             sequelize.connectionManager.releaseConnection(connection);
+            
+//           },
+//           function findAllError(err) {
+//             res.send(500).json({error: err});
+//           }
+//         );
+//       })
+//   })
+//   .catch(err => res.status(500).json({error: err}))
+// })
 
 
 module.exports = router;
