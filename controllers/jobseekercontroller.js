@@ -165,7 +165,7 @@ http://localhost:3000/jobseeker/delete          -  DELETE   > delete job seeker 
 /********************************
  * JOBSEEKER - confirm password *
  *******************************/
- router.get('/comparePwd', validateJobseekerSession, (req,res) => {
+ router.post('/comparePwd', validateJobseekerSession, (req,res) => {
     Jobseeker.findOne({
         where: { id: req.jobseeker.id }
     })
