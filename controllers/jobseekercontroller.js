@@ -148,7 +148,7 @@ http://localhost:3000/jobseeker/delete          -  DELETE   > delete job seeker 
  * JOBSEEKER - modify password  *
  *******************************/
  router.patch('/changePwd', validateJobseekerSession, (req,res) => {
-    const updateProfile = {
+  const updateProfile = {
         password: bcrypt.hashSync(req.body.jobseeker.password, 13)
   };
   
@@ -160,6 +160,32 @@ http://localhost:3000/jobseeker/delete          -  DELETE   > delete job seeker 
   )
   .catch((err) => res.status(500).json({error: err}));
   })
+
+
+/********************************
+ * JOBSEEKER - confirm password *
+ *******************************/
+ router.get('/comparePwd', validateJobseekerSession, (req,res) => {
+    Jobseeker.findOne({
+        where: { id: req.jobseeker.id }
+    })
+    .then((jobseeker) => {
+        if(jobseeker) {
+            bcrypt.compare(req.body.jobseeker.password, jobseeker.password, function(err, matches) {
+                if(matches){
+                    res.status(200).json({
+                        message: "Passwords matched"
+                    })
+                } else {
+                    res.status(502).send({error: "Wrong password"});
+                }
+        });
+        } else {
+            res.status(500).json({ error: "Job seeker does not exist" })
+        }
+    })
+    .catch((err) => res.status(500).json({ error: err }));
+})
 
 
 /********************

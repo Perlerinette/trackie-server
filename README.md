@@ -40,6 +40,8 @@
 ![](testing_images/jobseeker-changeEmail.png)
 #### localhost:3000/jobseeker/changePwd       -  PATCH
 ![](testing_images/jobseeker-changePwd.png)
+#### localhost:3000/jobseeker/comparePwd       -  GET
+![](testing_images/jobseeker-comparePwd.png)
 #### localhost:3000/jobseeker/countAll        -  GET
 ![](testing_images/jobseeker-countAll.png)
 #### localhost:3000/jobseeker/delete        -  DELETE
