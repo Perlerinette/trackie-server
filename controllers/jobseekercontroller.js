@@ -19,6 +19,7 @@ http://localhost:3000/jobseeker/addCode         -  PATCH > add an invitation cod
 http://localhost:3000/jobseeker/changeSharing   -  PATCH > option to share or not job app information
 http://localhost:3000/jobseeker/changeEmail     -  PATCH > update email
 http://localhost:3000/jobseeker/changePwd       -  PATCH > update password
+http://localhost:3000/jobseeker/comparePwd      -  POST  > checked password in file and password entered by user to verify identity.
 http://localhost:3000/jobseeker/countAll        -  GET   > nb of jobseekers accounts
 http://localhost:3000/jobseeker/delete          -  DELETE   > delete job seeker account
 

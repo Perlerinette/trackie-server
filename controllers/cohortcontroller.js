@@ -114,7 +114,7 @@ router.get('/getData/:cohort', validateSchoolSession, function(req,res) {
     .then(cohorts => {
         sequelize
         .query(
-          `SELECT jobapps.jobtitle, jobapps.company, jobapps.status, jobapps.location 
+          `SELECT jobapps.jobtitle, jobapps.company, jobapps.status, jobapps.location, jobapps.jobseekerid 
           FROM jobapps 
           INNER JOIN jobseekers
               on (jobapps.jobseekerid = jobseekers.id) 
