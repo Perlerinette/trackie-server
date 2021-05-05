@@ -7,7 +7,7 @@ const { Sequelize } = require("sequelize");
 //   dialect: "postgres",
 // });
 
-const sequelize = new Sequelize(process.env.DATABASE_URL ||
+const db = new Sequelize(process.env.DATABASE_URL ||
   `postgresql://postgres:${encodeURIComponent(process.env.PASS_DB)}@localhost/trackie`,
    {
   dialect: 'postgres',
