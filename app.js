@@ -30,8 +30,8 @@ app.use('/cohort', cohort);
 db.authenticate()
 // .then(() => db.sync({force: true}))
 .then(() => db.sync())
-.then(() =>  app.listen(3000, () => {
-    console.log(`[server]: App is listening on localhost:3000`);
+.then(() =>  app.listen(process.env.PORT, () => {
+    console.log(`[server]: App is listening on port ${process.env.PORT}`);
   })
 )
 .catch((e) => {
