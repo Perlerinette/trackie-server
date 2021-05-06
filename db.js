@@ -11,13 +11,14 @@ const db = new Sequelize(process.env.DATABASE_URL ||
   `postgresql://postgres:${encodeURIComponent(process.env.PASS_DB)}@localhost/trackie`,
    {
   dialect: 'postgres',
-  dialectOptions: {
-        ssl:{
-            require:true,
-            rejectUnauthorized: false,
+  //comment below to test locally
+  // dialectOptions: {
+  //       ssl:{
+  //           require:true,
+  //           rejectUnauthorized: false,
 
-        }
-    }
+  //       }
+  //   }
 });
 
 
